@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons'
 import Colors from '@/constants/Colors'
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+
 const SearchBar = () =>
     <View style={styles.searchcontainer}>
 <View style={styles.searchSection}>
