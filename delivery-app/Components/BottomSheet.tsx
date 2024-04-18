@@ -35,7 +35,7 @@ const BottomSheet = forwardRef <Ref> ((props,ref) => {
     <TouchableOpacity>
 <View style={styles.item}>
     <Ionicons name="location-outline" size={20} color={Colors.medium}/>
-    <Text style={{}}> current Location</Text>
+    <Text style={{flex: 1}}> Current Location</Text>
     <Ionicons name="chevron-forward" size={20} color={Colors.primary}/>
 
 </View>
@@ -106,7 +106,13 @@ margin: 16
     },
     item :{
         flexDirection:'row',
-        gap:8
+        gap:8,
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        padding:16,
+        borderBottomWidth:1,
+        borderColor: Colors.grey,
+        borderWidth:1
     }
    
 })
