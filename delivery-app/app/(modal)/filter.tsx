@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Touchable, View, ListRenderItem, Button } from 'react-native'
+import { StyleSheet, Text,  View, ListRenderItem, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Colors from '@/constants/Colors'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
@@ -7,7 +7,6 @@ import  categories  from '@/assets/data/filter.json'
 import { Ionicons } from '@expo/vector-icons'
 import  BouncyCheckbox  from 'react-native-bouncy-checkbox'
 import Animated, { useAnimatedStyle, useSharedValue,withTiming } from 'react-native-reanimated'
-
 
 
 
