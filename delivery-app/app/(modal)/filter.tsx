@@ -63,12 +63,13 @@ const Filter = () => {
     const [items,setItems] = useState<Category []>(categories)
 const [selected, setSelectedItems] = useState<Category[]>([])
 const flexWidth = useSharedValue(0)
+const scale = useSharedValue(0);
 
 useEffect(() => {
     const hasSelected = selected.length > 0;
     const selectedItems = items.filter((item) => item.checked);
     const newSelected = selectedItems.length > 0
-    const scale = useSharedValue(0);
+    
 
     if (hasSelected !== newSelected){
         console.log('HAS CHANGED')
@@ -88,6 +89,7 @@ const handleClearAll =() => {
 const animatedStyles = useAnimatedStyle(() => {
     return {
         width: flexWidth.value,
+        opacity: flexWidth.value> 0 ? 1 : 0
     }
 })
 const animatedText = useAnimatedStyle(() => {
