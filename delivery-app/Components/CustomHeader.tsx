@@ -18,7 +18,7 @@ const SearchBar = () =>(
    <FontAwesome  style={styles.searchIcon}name="search" size={24} color="#9F9AA1" />
 <TextInput style={styles.input} placeholder='Restaurants,groceries,dishes'/>
    </View>
-   <Link href={'/'} asChild>
+   <Link href={'/(modal)/filter'} asChild>
     <TouchableOpacity style={styles.optionButton}>
     <Ionicons name="options-outline" size={20} color={Colors.primary}/>
     </TouchableOpacity>

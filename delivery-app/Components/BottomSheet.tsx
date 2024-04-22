@@ -42,7 +42,14 @@ const BottomSheet = forwardRef <Ref> ((props,ref) => {
     </TouchableOpacity>
 </Link>
 <Text style={styles.subheader}>Arrival Time </Text>
+<TouchableOpacity>
+<View style={styles.item}>
+    <Ionicons name="stopwatch-outline" size={20} color={Colors.medium}/>
+    <Text style={{flex: 1}}>Now</Text>
+    <Ionicons name="chevron-forward" size={20} color={Colors.primary}/>
 
+</View>
+    </TouchableOpacity>
     <TouchableOpacity style={styles.button} onPress={() => dismiss()} >
     <Text style={styles.buttonText}>Confirm</Text>
     </TouchableOpacity>
