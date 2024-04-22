@@ -1,15 +1,22 @@
 import { StyleSheet, Text, View, Image, ListRenderItem, SectionList } from 'react-native'
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useRef, useState } from 'react'
 import ParallaxScrollView from '@/Components/ParallaxScrollView'
 import Colors from '@/constants/Colors'
 import { restaurant } from '@/assets/data/restaurant'
 import { Link, useNavigation } from 'expo-router'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { Ionicons } from '@expo/vector-icons'
-import Animated from 'react-native-reanimated'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 const Details = () => {
     const navigation = useNavigation()
     const [activeIndex, setActiveIndex] = useState(0)
+
+    const opacity = useSharedValue(0);
+    const animatedStyles = useAnimatedStyle(() =>( {
+        opacity: opacity.value
+    }))
+    const scrollRef = useRef<ScrollView>(null);
+    const itemsRef = useRef<TouchableOpacity []>([]);
     const DATA=restaurant.food.map((item,index)=>({
         title:item.category,
         data:item.meals,
@@ -38,11 +45,24 @@ const Details = () => {
         })
       },[])
       const selectCategory = (index: number) => {
+        const selected = itemsRef.current [index];
+        
         setActiveIndex(index)
+        selected.measure((x) => {
+            scrollRef.current?.scrollTo({x: x -16, y: 0,animated:true})
+        })
+      }
+      const onScroll =  (event: any) => {
+        const y = event.nativeEvent.contentOffset.y;
+        if (y > 350) {
+            opacity.value = withTiming(1);
+        } else {
+            opacity.value = withTiming(0);
+        }
       }
     
       const renderItem:ListRenderItem<any>=({item,index})=>(
-        <Link href={'/'} asChild>
+        <Link href={{pathname:'/(modal)/dish', params: {id: item.id}}} asChild>
     
         <TouchableOpacity style={styles.item}>
           <View style={{flex:1}}>
@@ -57,7 +77,9 @@ const Details = () => {
       )
       return (
         <>
-          <ParallaxScrollView backgroundColor={'#fff'} style={{ flex: 1 }}
+          <ParallaxScrollView
+          scrollEvent = {onScroll}
+          backgroundColor={'#fff'} style={{ flex: 1 }}
             parallaxHeaderHeight={250}
             stickyHeaderHeight={100}
             renderBackground={() => <Image source={restaurant.img} style={{ height:300,width:'100%'}} />}
@@ -93,12 +115,14 @@ const Details = () => {
             </View>
     
           </ParallaxScrollView>
-          <Animated.View style={[styles.stickySegments]}>
+          <Animated.View style={[styles.stickySegments , animatedStyles]}>
             <View style={styles.segmentsShadow} >
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{paddingHorizontal:16}}>
+                <ScrollView ref={scrollRef}horizontal showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.segmentScrollView}>
                     {restaurant.food.map ((item,index) => (
-                        <TouchableOpacity key={index} style={activeIndex === index ? styles.
+                        <TouchableOpacity 
+                        ref={ref => itemsRef.current[index] = ref!}
+                        key={index} style={activeIndex === index ? styles.
                             segmentButtonActive : styles.segmentButton} onPress={ () => selectCategory(index)} >
                         
                             <Text style={activeIndex === index ? styles.
@@ -203,15 +227,21 @@ position: 'absolute',
 height: 50,
 left: 0,
 right: 0,
-top: 110,
-backgroundColor: '#fff'
+top: 100,
+backgroundColor: '#fff',
+overflow: 'hidden',
+paddingBottom: 10,
       },
       segmentsShadow: {
 justifyContent: 'center',
-paddingTop: 10,
+backgroundColor: '#fff',
 shadowColor: '#000',
 shadowOffset: {width: 0, height: 4},
-shadowOpacity: 0.2
+shadowOpacity: 0.2,
+shadowRadius:4,
+elevation:5,
+width: '100%',
+height:'100%'
       },
 
       segmentButton:{
@@ -237,6 +267,12 @@ shadowOpacity: 0.2
         color: '#fff',
         fontWeight: 'bold',
         fontSize: 16
+      },
+      segmentScrollView :{
+       paddingHorizontal: 16,
+       alignItems: 'center',
+       gap: 20 ,
+       paddingBottom: 4
       }
     
     })

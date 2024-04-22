@@ -44,7 +44,19 @@ const navigation = useNavigation()
           ),
       
       
-        }} />
+        }} /> 
+         <Stack.Screen name="(modal)/dish" options={{presentation: 'modal',headerTitle:'',
+        //  headerShadowVisible: false,
+         headerTransparent: true,
+      headerLeft: () => (
+       
+          <TouchableOpacity  style={{backgroundColor: '#fff',borderRadius:20,padding:6}}onPress={() => {navigation.goBack()}}>
+            <Ionicons name="close-outline" size={28} color={Colors.primary} />
+          </TouchableOpacity>
+        ),
+      
+      
+      }} />
       </Stack>
       </BottomSheetModalProvider>
   );
